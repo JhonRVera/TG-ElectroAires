@@ -1,0 +1,53 @@
+/*
+    MOBILE
+*/
+@media (min-width: 375px) and (max-width: 767px) {
+    .logo__electro {
+        background-image: url('../images/logoelectroaires.png');
+        background-repeat: no-repeat;  
+        height: 150px;
+        text-align: center;
+        background-size: contain;
+        background-position: center;
+        width: auto;
+    }
+    .header__home {
+        display: none;
+    }
+    .home__login {
+        top: 12rem;
+    }
+
+    .home__login h1 {
+        font-size: 24px;
+    }
+
+    .home__login p {
+        font-size: 20px;
+    }
+
+    .home__login a {
+        font-size: 17px;
+    }
+
+    header {
+        top: 1rem;
+        background-color: transparent;
+    }
+
+
+}
+
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    html {
+        background-repeat:repeat
+    }
+
+    .home__login {
+        top: 20rem;
+    }
+
+}

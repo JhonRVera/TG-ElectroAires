@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&family=Roboto&display=swap');
+
+html {
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    background-image: url('../images/aire.webp');
+    background-repeat: no-repeat;
+}
+
+body {
+    margin: 0px;
+}
+
+footer {
+    background-color: black;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    color: white;
+    text-align: center;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 5rem;
+    background-color:#0a6bff;
+}
+
+.header__home {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.header__home span{
+    text-align: center;
+    font-family: 'Concert One';
+    font-size: 40px;
+    color: white;
+}
+
+.footer__home {
+    margin-top: 12px;
+}
+
+.footer__home span {
+    font-size: 13px;
+}
+
+.home__login {
+    position: absolute;
+    top: 5rem;
+    text-align: center;
+    width: 80%;
+    margin: 0 10%;
+    text-align: center;
+}
+
+.home__login {
+    font-size: 1.9rem;
+    color: #ffff;
+}
+
+.home__login p {
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #ffff;
+    letter-spacing: 1.5px;
+}
+
+.home__login a {
+    background-color: #0a6bff;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: .5rem 2rem;
+    letter-spacing: 2px;
+    transition: ease-out .2s all;
+}
+
+.home__login a:hover {
+    background-color: #065dd8;
+    transition: ease-in .2s all;
+    border-radius: 5px;
+}
+
+.login__button {
+    padding: 15px;
+    background-color: #0a6bff;
+    border: none;
+    margin-top: 1rem;
+    color: white;
+    transition: all ease-in .2s;
+    font-size: 17px;
+    font-family: 'Roboto';
+    text-transform: uppercase;
+}
+
+.login__button:hover{
+    background-color: #065dd8;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.field__input input {
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    width: 30%;
+    padding: 15px 40px;
+    border: none;
+    margin: 5px 0;
+    border-radius: 10px;
+    text-align: center;
+    border-bottom: 1px solid #000000;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/dashboard.css' %}">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="menu__dashboard">
+        <div class="items__dashboard">
+            <div class="home__icon"></div>
+            <h4>
+                Bienvenido {{ user.username | upper}}
+            </h4>
+                <a href="{% url 'dashboard' %}"><div class="icon__dashboard"></div></a>
+                <a href="{% url 'buscar' %}"><div class="icon__search"></div></a>
+                <a href="{% url 'inventario' %}"><div class="icon__inventory"></div></a>
+                <a href="{% url 'reportes' %}"><div class="icon__reports"></div></a>
+                <a href="{% url 'exit' %}"><div class="icon__exit"></div></a>
+            </ul>
+        </div>
+        <div class="services__dashboard">
+            {% block content %} {% endblock %}
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&family=Roboto&display=swap');
+
+html {
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+}
+.menu__dashboard {
+    display: flex;
+}
+
+.items__dashboard {
+    width: 80px;
+    margin: 20px 30px 0 30px;
+    display: grid;
+    text-align: center;
+    justify-content: center;
+    background: #008eff;
+}
+.items__dashboard h4 {
+    color: white;
+}
+
+.services__dashboard {
+    width: 80%;
+}
+
+.items__dashboard ul li {
+    list-style-type: none;
+    margin: 2rem 0;
+}
+
+.items__dashboard ul li:last-child {
+    margin: 10rem 0;
+}
+
+.items__dashboard ul li a {
+    text-decoration: none;
+    color:black;
+}
+
+.items__dashboard .home__icon {
+    background-image: url('../images/logoelectroaires.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 5rem;
+    width: 5rem;
+}
+
+.items__dashboard .icon__dashboard {
+    background-image: url('../images/nuevo-documento.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 2.5rem;
+    width: 3rem;
+    margin: 1rem;
+}
+
+.items__dashboard .icon__search {
+    background-image: url('../images/buscar.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 2.5rem;
+    width: 3rem;
+    margin: 1rem;
+}
+.items__dashboard .icon__inventory {
+    background-image: url('../images/inventario-disponible.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 2.5rem;
+    width: 3rem;
+    margin: 1rem;
+}
+.items__dashboard .icon__reports {
+    background-image: url('../images/reporte-de-negocios.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 2.5rem;
+    width: 3rem;
+    margin: 1rem;
+}
+.items__dashboard .icon__exit {
+    background-image: url('../images/aplicacion.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 2.5rem;
+    width: 3rem;
+    margin: 4rem 1rem 1rem;
+}
