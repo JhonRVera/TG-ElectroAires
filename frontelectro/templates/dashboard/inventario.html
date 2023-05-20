@@ -1,7 +1,44 @@
 {% extends 'dashboard/baseDash.html' %}
 
-{% block content %} 
-<h1>
-    Inventario Vehiculo
-</h1>
+{% block content %}
+<div class="data__center">
+    <div class="data__inv">
+        <h1>Inventario</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="field__input">
+                <input type="text" name="nombre_r" id="" placeholder="Nombre repuesto">
+            </div>
+            <div class="field__input">
+                <input type="number" name="cantidad" id="" placeholder="Cantidad">
+            </div>
+            <div class="field__input">
+                <input type="number" name="v_proveedor" id="" placeholder="Valor Porveedor">
+            </div>
+            <div class="field__input">
+                <input type="number" name="v_venta" id="" placeholder="Valor Venta">
+            </div>
+        </form>
+
+        <button class='enter__button' type="submit">INGRESAR REPUESTOS</button>
+    </div>
+    <div class="data__table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Gas</td>
+                    <td>10</td>
+                    <td>10000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

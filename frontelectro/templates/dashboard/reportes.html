@@ -1,7 +1,20 @@
 {% extends 'dashboard/baseDash.html' %}
 
-{% block content %} 
-<h1>
-    Reportes Vehiculo
-</h1>
+{% block content %}
+<div class="data__form">
+    <h1>Generacion Reportes</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="fecha_ini">Ingrese fecha incial:</label>
+        <div class="field__input report">
+            <input type="date" name="fecha_ini" id="" placeholder="Ingrese fecha">
+        </div>
+        <label for="fecha_ini">Ingrese fecha final:</label>
+        <div class="field__input report">
+            <input type="date" name="fecha_fin" id="" placeholder="Ingrese fecha">
+        </div>
+    </form>
+
+    <button class='enter__button' type="submit">GENERAR REPORTE</button>
+</div>
 {% endblock %}

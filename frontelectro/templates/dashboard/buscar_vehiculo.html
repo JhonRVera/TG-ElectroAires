@@ -1,7 +1,36 @@
 {% extends 'dashboard/baseDash.html' %}
 
-{% block content %} 
-<div class="dashboard__register">
-    <h1>Registro Nuevo Vehiculo</h1>
+{% block content %}
+<div class="data__form">
+    <h1>Buscar Vehiculo</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="field__input">
+            <input type="search" name="nombre" placeholder="Ingrese placa a buscar">
+            <button class='enter__button' type="submit">BUSCAR VEHICULO</button>
+        </div>
+    </form>
+</div>
+<div class="data__table">
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha entrada</th>
+                <th>Fecha salida</th>
+                <th>Placa</th>
+                <th>Descripcion</th>
+                <th>Valor total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>11/07/2023</td>
+                <td>12/07/2023</td>
+                <td>ASD123</td>
+                <td>arreglos</td>
+                <td>120000</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 {% endblock %}
