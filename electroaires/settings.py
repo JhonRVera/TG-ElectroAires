@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'electroaires.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'electroaires',
+        'USER': 'postgres',
+        'PASSWORD':'prueba1234',
+        'HOST':'35.247.247.120',
+        'PORT': '5432',
     }
 }
 
@@ -122,11 +126,3 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
-#VARIBLES DE REDIRECCION
-
-LOGIN_REDIRECT_URL = 'dashboard'
-LOGOUT_REDIRECT_URL = 'login'
-
