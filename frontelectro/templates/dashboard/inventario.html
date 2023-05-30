@@ -4,41 +4,63 @@
 <div class="data__center">
     <div class="data__inv">
         <h1>Inventario</h1>
-        <form method="post">
+        <form method="POST">
             {% csrf_token %}
             <div class="field__input">
-                <input type="text" name="nombre_r" id="" placeholder="Nombre repuesto">
+                <input type="text" name="nombre_r" placeholder="Nombre repuesto" required>
             </div>
             <div class="field__input">
-                <input type="number" name="cantidad" id="" placeholder="Cantidad">
+                <input type="number" name="cantidad" placeholder="Cantidad" required>
             </div>
             <div class="field__input">
-                <input type="number" name="v_proveedor" id="" placeholder="Valor Porveedor">
+                <input type="number" name="v_proveedor" placeholder="Valor Proveedor" required>
             </div>
             <div class="field__input">
-                <input type="number" name="v_venta" id="" placeholder="Valor Venta">
+                <input type="number" name="v_venta" placeholder="Valor Venta" required>
             </div>
+            <button class='enter__button' type="submit">INGRESAR REPUESTOS</button>
         </form>
+        <hr>
+        <div class="success">
+            <h4>
+                {{ mensaje }}
 
-        <button class='enter__button' type="submit">INGRESAR REPUESTOS</button>
+                {{ dataInvetario }}
+            </h4>
+        </div>
+
     </div>
     <div class="data__table">
-        <table>
+        <table class="scroll__table">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Nombre</th>
                     <th>Cantidad</th>
                     <th>Precio</th>
+                    <th>Valor Proveedor</th>
+                    <th>Valor Venta</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
+                {% for item in dataInventario %}
                 <tr>
-                    <td>Gas</td>
-                    <td>10</td>
-                    <td>10000</td>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.r_nombre_repuesto }}</td>
+                    <td>{{ item.r_cantidad }}</td>
+                    <td>{{ item.r_valor_proveedor }}</td>
+                    <td>{{ item.r_valor_publico }}</td>
+                    <td>{{ item.r_valor_publico }}</td>
+                    <td>
+                        <button type="submit">ELIMINAR</button>
+                        <button type="submit">EDITAR</button>
+                    </td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
+    
 </div>
 {% endblock %}
