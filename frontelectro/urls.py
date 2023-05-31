@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import home, login, dashboard, buscar, inventario, reportes, exit, ventas
+from .views import home, login, dashboard, buscar, inventario, reportes, exit, ventas, eliminar_producto
 
 urlpatterns = [
     path('', home, name='home'),
@@ -27,4 +27,6 @@ urlpatterns = [
     path('inventario/', inventario, name='inventario'),
     path('reportes/', reportes, name='reportes'),
     path('logout/', exit, name='exit'),
+    path('eliminar_producto/<int:producto_id>/', eliminar_producto, name='eliminar_producto'),
+
 ]

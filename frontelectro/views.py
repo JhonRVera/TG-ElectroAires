@@ -64,6 +64,17 @@ def dashboard(request):
                 print(f"Error en la api codigo{ response.status_code}")
     return render(request, 'dashboard/dashboard.html')
 
+def eliminar_producto(request, producto_id):
+    url = f'https://electroaires.herokuapp.com/repuestos/{producto_id}/'
+    response = requests.delete(url)
+    
+    if response.status_code == 204:
+        return redirect('inventario')
+    else:
+        print(f"Error en la API código {response.status_code}")
+
+    return redirect('inventario')
+
 def inventario(request):
     url = 'https://electroaires.herokuapp.com/repuestos/'
     response = requests.get(url)
