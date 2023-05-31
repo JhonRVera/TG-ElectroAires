@@ -9,10 +9,9 @@
         <div class="field__input">
             <input type="number" name="cedula" value="{{ cedula | upper}}" placeholder="Cedula">
             <h6>{{ mensaje }}</h6>
-            <h6>{{ mensaje_sucess }}</h6>
         </div>
         <div class="field__input">
-            <input type="text" name="nombre" value="{{ nombre | upper }}" placeholder="Nombre">
+            <input type="text" name="nombre" value="{{ nombre }}" placeholder="Nombre">
         </div>
         <div class="field__input">
             <input type="number" name="celular" value="{{ celular }}" placeholder="Celular">
@@ -36,18 +35,6 @@
 
     <button class='enter__button' type="submit">GENERAR SERVICIO</button>
 
-</div>
-
-<div class="table__customers">
-    <table>
-        <thead>
-            <tr>
-                <th>Cedula</th>
-                <th>Nombres</th>
-                <th>Celular</th>
-            </tr>
-        </thead>
-    </table>
 </div>
 
 {% endblock %}
