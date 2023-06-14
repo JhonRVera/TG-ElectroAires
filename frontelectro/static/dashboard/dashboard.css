@@ -118,7 +118,7 @@ html {
 .data__table {
     display: grid;
     margin: 0 10rem 0 10rem;
-    max-height: 17rem; 
+    max-height: 17rem;
     overflow-y: auto;
 }
 
@@ -155,7 +155,7 @@ html {
     cursor: pointer;
 }
 
-button.btn__edit{
+button.btn__edit {
     border: none;
     padding: 5px 17px;
     margin: 0 0 5px;
@@ -192,4 +192,34 @@ button.btn__edit{
 
 .modal-close:hover {
     color: red;
+}
+
+.active__service {
+    width: 40%;
+    position: absolute;
+    top: 7rem;
+    margin-left: 36rem;
+    display: grid;
+    text-align: center;
+}
+
+.active__service h1 {
+    margin-bottom: 3rem;
+}
+
+.active__service table thead {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+}
+
+.active__service table thead th {
+    width: 30%;
+    padding-bottom: 10px;
+}
+
+.active__service {
+    max-height: 25rem;
+    overflow-y: auto;
 }
