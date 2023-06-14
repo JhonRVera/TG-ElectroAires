@@ -2,11 +2,15 @@ import requests
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
+from frontelectro.utils.funciones_especiales import validar_placa
+from frontelectro.utils.autenticacion import autenticacion
+
 
 # Create your views here.
-
-
 def home(request):
+    url = 'https://electroaires.herokuapp.com/servicios/'
+    response = requests.get(url)
+    print(response.json())
     return render(request, 'home/home.html')
 
 
@@ -40,8 +44,8 @@ def dashboard(request):
         }
 
         url = 'https://electroaires.herokuapp.com/clientes/verificacion/'
-        response = requests.post(url, data=data)
-
+        response = requests.post(url, data=data,headers=autenticacion(request))
+        print(f"DATOS DE CLIENTE EXISTENTE {response.json()}")
         if response.status_code == 200:
             data_json = response.json()
             cedula = data_json['cedula']
@@ -53,21 +57,34 @@ def dashboard(request):
                 'cedula': cedula,
                 'nombre': nombre,
                 'celular': celular
-
             }
             url = 'https://electroaires.herokuapp.com/clientes/'
-            response = requests.post(url, data=data)
+            response = requests.post(url, data=data,headers=autenticacion(request))
+            print(f"DATOS DE CLIENTE NUEVO {response.json()}")
 
             if response.status_code == 200:
                 return render(request, 'dashboard/dashboard.html', {'mensaje_sucess': 'Usuario creado'})
             else:
-                print(f"Error en la api codigo{ response.status_code}")
+                print(f"Error en la api codigo agregar vehiculo -> {response.status_code}")
     return render(request, 'dashboard/dashboard.html')
+
+
+def generar_servicio(request):
+    mensaje = None
+    if request.method == 'POST':
+        tipo = request.POST.get('tipo')
+        placa = request.POST.get('placa')
+        if validar_placa(placa) == True:
+            mensaje = 'Usuario placa válida'
+        else:
+            mensaje = 'Usuario placa no válida'
+    return render(request, 'dashboard/dashboard.html', {'mensaje': mensaje})
+
 
 def eliminar_producto(request, producto_id):
     url = f'https://electroaires.herokuapp.com/repuestos/{producto_id}/'
     response = requests.delete(url)
-    
+
     if response.status_code == 204:
         return redirect('inventario')
     else:
@@ -75,10 +92,11 @@ def eliminar_producto(request, producto_id):
 
     return redirect('inventario')
 
+
 def inventario(request):
     url = 'https://electroaires.herokuapp.com/repuestos/'
     response = requests.get(url)
-    
+
     if response.status_code == 200:
         dataInventario = response.json()
     else:
@@ -99,7 +117,7 @@ def inventario(request):
         }
 
         response = requests.post(url, data=data)
-        
+
         if response.status_code == 201:
             if requests.get(url).status_code == 200:
                 dataInventario = requests.get(url).json()
@@ -108,6 +126,7 @@ def inventario(request):
             print(f"Error en la API código {response.status_code}")
 
     return render(request, 'dashboard/inventario.html', {'dataInventario': dataInventario})
+
 
 def ventas(request):
     return render(request, 'dashboard/ventas.html')
