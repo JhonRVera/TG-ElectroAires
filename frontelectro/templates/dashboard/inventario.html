@@ -31,7 +31,7 @@
 
     </div>
     <div class="data__table">
-        <table class="scroll__table">
+        <table>
             <thead>
                 <tr>
                     <th>#</th>
@@ -39,7 +39,6 @@
                     <th>Cantidad</th>
                     <th>Precio</th>
                     <th>Valor Proveedor</th>
-                    <th>Valor Venta</th>
                     <th></th>
                 </tr>
             </thead>
@@ -48,11 +47,10 @@
                 <tr>
                     <td>{{ item.id }}</td>
                     <hr>
-                    <td>{{ item.r_nombre_repuesto }}</td>
+                    <td>{{ item.r_nombre_repuesto | capitalize }}</td>
                     <td>{{ item.r_cantidad }}</td>
+                    <td>{{ item.r_valor_publico }}</td>
                     <td>{{ item.r_valor_proveedor }}</td>
-                    <td>{{ item.r_valor_publico }}</td>
-                    <td>{{ item.r_valor_publico }}</td>
                     <td>
                         <button type="button" class="btn__edit"
                             onclick="abrirModalEditar('{{ item.id }}')">EDITAR</button>
