@@ -8,9 +8,6 @@ from frontelectro.utils.autenticacion import autenticacion
 
 # Create your views here.
 def home(request):
-    url = 'https://electroaires.herokuapp.com/servicios/'
-    response = requests.get(url)
-    print(response.json())
     return render(request, 'home/home.html')
 
 
@@ -39,12 +36,13 @@ def dashboard(request):
         nombre = request.POST.get('nombre')
         celular = request.POST.get('celular')
 
+        # Verificar cliente existente
         data = {
             'cedula': cedula
         }
-
         url = 'https://electroaires.herokuapp.com/clientes/verificacion/'
-        response = requests.post(url, data=data,headers=autenticacion(request))
+        response = requests.post(
+            url, data=data, headers=autenticacion(request))
         print(f"DATOS DE CLIENTE EXISTENTE {response.json()}")
         if response.status_code == 200:
             data_json = response.json()
@@ -52,21 +50,44 @@ def dashboard(request):
             nombre = data_json['nombre']
             celular = data_json['celular']
             return render(request, 'dashboard/dashboard.html', {'cedula': cedula, 'nombre': nombre, 'celular': celular, 'mensaje': 'Usuario existente'})
-        else:
-            data = {
-                'cedula': cedula,
-                'nombre': nombre,
-                'celular': celular
-            }
-            url = 'https://electroaires.herokuapp.com/clientes/'
-            response = requests.post(url, data=data,headers=autenticacion(request))
-            print(f"DATOS DE CLIENTE NUEVO {response.json()}")
 
-            if response.status_code == 200:
-                return render(request, 'dashboard/dashboard.html', {'mensaje_sucess': 'Usuario creado'})
+        # Crear nuevo cliente
+        data = {
+            'cedula': cedula,
+            'nombre': nombre,
+            'celular': celular
+        }
+        url = 'https://electroaires.herokuapp.com/clientes/'
+        response = requests.post(
+            url, data=data, headers=autenticacion(request))
+        print(f"DATOS DE CLIENTE NUEVO {response.json()}")
+        if response.status_code == 200:
+            return render(request, 'dashboard/dashboard.html', {'mensaje_sucess': 'Usuario creado'})
+        else:
+            print(
+                f"Error en la API al agregar cliente (código: {response.status_code})")
+
+    # Obtener servicios activos
+    url = 'https://electroaires.herokuapp.com/servicios/'
+    response = requests.get(url)
+    data = response.json()
+    if response.status_code == 200:
+        servicios = []
+        for item in data:
+            servicio_id = item['id']
+            vehiculo = item['s_vehiculo']
+            estado = item['estado']
+            if estado == True:
+                estado = 'ACTIVO'
             else:
-                print(f"Error en la api codigo agregar vehiculo -> {response.status_code}")
-    return render(request, 'dashboard/dashboard.html')
+                estado = 'INACTIVO'
+            servicios.append(
+                {'id': servicio_id, 'vehiculo': vehiculo, 'estado': estado})
+
+        return render(request, 'dashboard/dashboard.html', {'servicios': servicios})
+    else:
+        print('Error al obtener los servicios activos')
+        return render(request, 'dashboard/dashboard.html', {'servicios': []})
 
 
 def generar_servicio(request):
@@ -88,7 +109,7 @@ def eliminar_producto(request, producto_id):
     if response.status_code == 204:
         return redirect('inventario')
     else:
-        print(f"Error en la API código {response.status_code}")
+        print(f"Error en la API código LINE 100 -> {response.status_code}")
 
     return redirect('inventario')
 
@@ -123,7 +144,7 @@ def inventario(request):
                 dataInventario = requests.get(url).json()
             return render(request, 'dashboard/inventario.html', {'mensaje': 'INVENTARIO ACTUALIZADO', 'dataInventario': dataInventario})
         else:
-            print(f"Error en la API código {response.status_code}")
+            print(f"Error en la API código LINE 135 ->{response.status_code}")
 
     return render(request, 'dashboard/inventario.html', {'dataInventario': dataInventario})
 
@@ -133,6 +154,18 @@ def ventas(request):
 
 
 def buscar(request):
+    if request.method == 'POST':
+        placa = request.POST.get('placa').upper()
+        if placa is not None and validar_placa(placa):
+            print(f'{placa} -> placa válida')
+            url = f'https://electroaires.herokuapp.com/vehiculos/{placa}/'
+            response = requests.get(url)
+            data = response.json()
+            print(data)
+            return render(request, 'dashboard/buscar_vehiculo.html', {'data': data,'mensaje':'Vehiculo encontrado'})
+        else:
+            print(f'{placa} -> no válida')
+            return render(request, 'dashboard/buscar_vehiculo.html', {'mensaje':'Placa no valida'})
     return render(request, 'dashboard/buscar_vehiculo.html')
 
 
