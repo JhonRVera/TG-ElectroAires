@@ -161,10 +161,11 @@ def buscar(request):
             url = f'https://electroaires.herokuapp.com/vehiculos/{placa}/'
             response = requests.get(url)
             data = response.json()
-            print(data)
-            return render(request, 'dashboard/buscar_vehiculo.html', {'data': data,'mensaje':'Vehiculo encontrado'})
+            if data['detail'] == 'Not found.':
+                return render(request, 'dashboard/buscar_vehiculo.html', {'data': data,'mensaje':'Vehiculo NO encontrado'})
+            else:
+                return render(request, 'dashboard/buscar_vehiculo.html', {'data': data,'mensaje':'Vehiculo encontrado'})
         else:
-            print(f'{placa} -> no válida')
             return render(request, 'dashboard/buscar_vehiculo.html', {'mensaje':'Placa no valida'})
     return render(request, 'dashboard/buscar_vehiculo.html')
 
