@@ -7,23 +7,23 @@
     <form method="POST">
         {% csrf_token %}
         <div class="field__input">
-            <input type="number" name="cedula" value="{{ cedula | upper}}" placeholder="Cedula">
+            <input type="number" name="cedula" value="{{ cedula | upper}}" placeholder="Cedula" required>
             <h6>{{ mensaje }}</h6>
         </div>
         <div class="field__input">
-            <input type="text" name="nombre" value="{{ nombre }}" placeholder="Nombre">
+            <input type="text" name="nombre" value="{{ nombre }}" placeholder="Nombre" required>
         </div>
         <div class="field__input">
-            <input type="number" name="celular" value="{{ celular }}" placeholder="Celular">
+            <input type="number" name="celular" value="{{ celular }}" placeholder="Celular" required>
         </div>
         <div class="field__input">
-            <input type="text" name="placa" placeholder="Placa">
+            <input type="text" name="placa" placeholder="Placa" required>
         </div>
         <div class="field__input">
-            <input type="text" name="m_obra" id="" placeholder="Costo mano de obra">
+            <input type="text" name="m_obra" id="" placeholder="Costo mano de obra" required>
         </div>
         <div class="field__input">
-            <textarea name="descripcion" id="" cols="30" rows="10" placeholder="Descripcion"></textarea>
+            <textarea name="descripcion" id="" cols="30" rows="10" placeholder="Descripcion" required></textarea>
         </div>
 
         
@@ -31,7 +31,9 @@
         <button class='enter__button' type="submit">GENERAR SERVICIO</button>
     </form>
 </div>
+
 <div class="active__service">
+    <h1>Servicion en cola</h1>
     <table>
         <thead>
             <tr>
@@ -41,134 +43,13 @@
             </tr>
         </thead>
         <tbody>
+            {% for servicio in servicios %}
             <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
+                <td>{{ servicio.id}}</td>
+                <td>{{ servicio.vehiculo }}</td>
+                <td>{{ servicio.estado }}</td>
             </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
-
-            
-            <tr>
-                <td>1</td>
-                <td>ASD123</td>
-                <td>ACTIVO</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

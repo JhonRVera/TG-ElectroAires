@@ -3,32 +3,28 @@
 {% block content %}
 <div class="data__form">
     <h1>Buscar Vehiculo</h1>
-    <form method="post">
+    <form method="POST">
         {% csrf_token %}
         <div class="field__input">
-            <input type="search" name="nombre" placeholder="Ingrese placa a buscar">
+            <input type="text" name="placa" placeholder="Ingrese placa a buscar" required>
             <button class='enter__button' type="submit">BUSCAR VEHICULO</button>
         </div>
     </form>
+
+    {{ mensaje }}
 </div>
 <div class="data__table">
     <table>
         <thead>
             <tr>
-                <th>Fecha entrada</th>
-                <th>Fecha salida</th>
                 <th>Placa</th>
-                <th>Descripcion</th>
-                <th>Valor total</th>
+                <th>Tipo</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>11/07/2023</td>
-                <td>12/07/2023</td>
-                <td>ASD123</td>
-                <td>arreglos</td>
-                <td>120000</td>
+                <td>{{ data.placa }}</td>
+                <td>{{ data.tipo }}</td>
             </tr>
         </tbody>
     </table>
