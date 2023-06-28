@@ -121,7 +121,7 @@ def inventario(request):
 
 
 def ventas(request):
-    return render(request, 'dashboard/ventas.html')
+    return render(request,'dashboard/ventas.html')
 
 
 def buscar(request):
