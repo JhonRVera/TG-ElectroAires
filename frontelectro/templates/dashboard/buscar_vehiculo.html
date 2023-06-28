@@ -10,22 +10,33 @@
             <button class='enter__button' type="submit">BUSCAR VEHICULO</button>
         </div>
     </form>
-
     {{ mensaje }}
 </div>
 <div class="data__table">
     <table>
         <thead>
             <tr>
+                <th>Cedula</th>
+                <th>Nombre</th>
                 <th>Placa</th>
-                <th>Tipo</th>
+                <th>Descripcion</th>
+                <th>Total</th>
+                <th>Fecha entrada</th>
+                <th>Fecha Salida</th>
             </tr>
         </thead>
         <tbody>
+            {% for datos in data %}
             <tr>
-                <td>{{ data.placa }}</td>
-                <td>{{ data.tipo }}</td>
+                <td>{{ datos.cliente.cedula }}</td>
+                <td>{{ datos.cliente.nombre }}</td>
+                <td>{{ datos.vehiculo.placa }}</td>
+                <td>{{ datos.s_descripcion }}</td>
+                <td>{{ datos.s_total }}</td>
+                <td>{{ datos.s_fecha_entrada }}</td>
+                <td>{{ datos.s_fecha_salida }}</td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
