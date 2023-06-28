@@ -16,5 +16,5 @@ def autenticacion(request):
         }
         return headers
     else:
-        print(f'ERROR DE API ACCES -> {response.status_code}')
+        print(f'ERROR DE API ACCESS -> {response.status_code}')
         return False
