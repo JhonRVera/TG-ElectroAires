@@ -54,12 +54,6 @@
                     <td>
                         <button type="button" class="btn__edit"
                             onclick="abrirModalEditar('{{ item.id }}')">EDITAR</button>
-                        <form id="eliminar-form-{{ item.id }}" class="btn__delete" method="POST"
-                            action="{% url 'eliminar_producto' item.id %}">
-                            {% csrf_token %}
-                            <button type="button"
-                                onclick="confirmarEliminacion('{{ item.r_nombre_repuesto }}', '{{ item.id }}')">ELIMINAR</button>
-                        </form>
                     </td>
                 </tr>
                 <!-- Modal de Edición -->
