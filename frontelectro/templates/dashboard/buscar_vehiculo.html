@@ -3,7 +3,7 @@
 {% block content %}
 <div class="data__form">
     <h1>Buscar Vehiculo</h1>
-    <form method="POST">
+    <form method="get">
         {% csrf_token %}
         <div class="field__input">
             <input type="text" name="placa" placeholder="Ingrese placa a buscar" required>

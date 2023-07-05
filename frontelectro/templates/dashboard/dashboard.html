@@ -1,18 +1,19 @@
 {% extends 'dashboard/baseDash.html' %}
+{% load static %}
 
 {% block content %}
 
 <div class="data__form">
     <h1>Validar cliente</h1>
-    <form method="POST">
+    <form method="POST" action="{% url 'dashboard' %}">
         {% csrf_token %}
         <div class="field__input">
             <input type="number" name="cedula_clt" placeholder="Cedula" required>
             <h6>{{ mensaje }}</h6>
             {% if messages %}
-                {% for message in messages %}
-                    <div class="message">{{ message }}</div>
-                {% endfor %}
+            {% for message in messages %}
+            <div class="message">{{ message }}</div>
+            {% endfor %}
             {% endif %}
         </div>
         <button class='enter__button' type="submit">BUSCAR CLIENTE</button>
@@ -20,21 +21,65 @@
 </div>
 
 <div class="data__form  placa__val">
-    <form method="POST">
+    <h1>Validar placa</h1>
+    <form method="POST" action="{% url 'generar_servicio' %}">
         {% csrf_token %}
-        <h1>Validar placa</h1>
         <div class="field__input">
-            <input type="text" name="placa" placeholder="Placa vehiculo">
+            <input type="text" name="placa" placeholder="Ingrese placa del vehiculo" required>
+        </div>
+        <div>
+            {{ mensaje_placa }}
         </div>
         <button class='enter__button' type="submit">BUSCAR PLACA</button>
     </form>
 </div>
 
-{% if crear_cliente %}
-<div id="clienteVentana">
-    <p>¿Desea crear un cliente nuevo?</p>
-    <button class="enter__button btn_cliente" onclick="cerrarCrearCliente('clienteVentana')">NO CREAR</button>
-    <button class="enter__button btn_cliente" onclick="abrirCrearCliente()">CREAR CLIENTE</button>
+
+
+{% if mensaje == "Cliente no encontrado" %}
+<div id="modalCrearUsuario">
+    <form method="POST" action="{% url 'crear_cliente' %}">
+        <div id="modalCrearUsuario-content">
+            <h1>Crear usuario</h1>
+            {% csrf_token %}
+            <div class="field__input modal__input">
+                <input type="number" name="cedula" placeholder="Cedula" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="text" name="nombre" placeholder="Nombre y apellidos" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="number" name="celular" placeholder="Celular" required>
+            </div>
+            <button class="enter__button btn_cliente" onclick="cerrarCrearCliente('modalCrearUsuario')">CERRAR</button>
+            <button type="submit" class="enter__button btn_cliente">CREAR CLIENTE</button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+{% if mensaje_placa == 'Vehiculo no encontrado' %}
+<div id="modalCrearUsuario">
+    <form method="POST">
+        <div id="modalCrearUsuario-content">
+            <h1>Crear Vehiculo</h1>
+            {% csrf_token %}
+            <div class="field__input modal__input">
+                <input type="number" name="descripcion" placeholder="Descripcion Arregle" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="text" name="s_obra" placeholder="Costo mano de obra" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="number" name="cliente" placeholder="Cliente" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="text" name="placa" placeholder="Placa" value="{{placa}}" required>
+            </div>
+            <button class="enter__button btn_cliente" onclick="cerrarCrearCliente('modalCrearUsuario')">CERRAR</button>
+            <button type="submit" class="enter__button btn_cliente">CREAR VEHICULO</button>
+        </div>
+    </form>
 </div>
 {% endif %}
 
@@ -44,23 +89,6 @@
     <label class="lbl_user"><strong>Numero de cedula :</strong> {{ cedula }}</label>
     <label class="lbl_user"><strong>Nombre:</strong> {{ nombre }}</label>
     <label class="lbl_user"><strong>Celular: </strong> {{ celular }}</label>
-</div>
-{% endif %}
-
-{% if crear_vehiculo %}
-<div class="create__car" id="crearVehiculo">
-    <h1>Crear vehiculos</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <div class="field__input">
-            <input type="number" name="cedula" placeholder="Cedula" required>
-            <h6>{{ mensaje }}</h6>
-        </div>
-        <div class="field__input">
-            <input type="number" name="placa" placeholder="Placa vehiculo">
-        </div>
-        <button class='enter__button' type="submit">BUSCAR PLACA</button>
-    </form>
 </div>
 {% endif %}
 
@@ -84,27 +112,6 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
-
-<!-- Modal crear usuario  -->
-<div id="modalCrearUsuario">
-    <form method="POST" action="{% url 'crear_cliente' %}">
-        <div id="modalCrearUsuario-content">
-            <h1>Crear usuario</h1>
-            {% csrf_token %}
-            <div class="field__input modal__input">
-                <input type="number" name="cedula" placeholder="Cedula">
-            </div>
-            <div class="field__input modal__input">
-                <input type="text" name="nombre" placeholder="Nombre y apellidos">
-            </div>
-            <div class="field__input modal__input">
-                <input type="number" name="celular" placeholder="Celular">
-            </div>
-            <button type="submit" class="enter__button btn_cliente">CREAR CLIENTE</button>
-            <button class="enter__button btn_cliente" onclick="cerrarCrearCliente('modalCrearUsuario')">CERRAR</button>
-        </div>
-    </form>
 </div>
 
 {% endblock %}
