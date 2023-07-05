@@ -3,7 +3,7 @@ import json
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from frontelectro.utils.funciones_especiales import validar_placa,obtener_servicios_activos
+from frontelectro.utils.funciones_especiales import validar_placa, obtener_servicios_activos, validar_cedula
 from frontelectro.utils.autenticacion import autenticacion
 
 
@@ -30,59 +30,75 @@ def login(request):
 
     return render(request, 'home/login.html')
 
+
 def crear_cliente(request):
     if request.method == 'POST':
         cedula = request.POST.get('cedula')
-        nombre = request.POST.get('nombre')
-        celular = request.POST.get('celular')
+        if validar_cedula(cedula):
+            cedula = request.POST.get('cedula')
+            nombre = request.POST.get('nombre')
+            celular = request.POST.get('celular')
+            data_nuevo = {
+                'cedula': cedula,
+                'nombre': nombre,
+                'celular': celular
+            }
+            url = 'https://electroaires.herokuapp.com/clientes/'
+            response = requests.post(
+                url, data=data_nuevo, headers=autenticacion(request))
 
-        data_nuevo = {
-            'cedula': cedula,
-            'nombre': nombre,
-            'celular': celular
-        }
-        url = 'https://electroaires.herokuapp.com/clientes/'
-        response = requests.post(url, data=data_nuevo, headers=autenticacion(request))
-                
-        if response.status_code == 201:
+            if response.status_code == 201:
                 messages.success(request, 'Cliente creado correctamente')
-        else:
-                messages.error(request, f'Error al crear el cliente. Código de respuesta: {response.status_code}')
+            else:
+                messages.error(
+                    request, f'Error al crear el cliente. Código de respuesta: {response.status_code}')
+        elif cedula is None:
+            messages.error(request, ' ')
     return redirect('dashboard')
+
 
 def dashboard(request):
     servicios = obtener_servicios_activos()
     if request.method == 'POST':
         cedula = request.POST.get('cedula_clt')
-        # Verificar cliente existente
-        url = f'https://electroaires.herokuapp.com/clientes/{cedula}/'
-        response = requests.get(url, headers=autenticacion(request))
-        data_json = {}
-        try:
-            data_json = response.json()
-        except json.JSONDecodeError:
-            pass
-        if 'detail' in data_json and data_json['detail'] == 'Not found.':
-            return render(request, 'dashboard/dashboard.html', {'crear_cliente': True, 'servicios': servicios, 'mensaje': "Cliente no encontrado"})
-        if response.status_code == 200:
-            cedula = data_json.get('cedula')
-            nombre = data_json.get('nombre')
-            celular = data_json.get('celular')
-            return render(request, 'dashboard/dashboard.html', {'cliente_encontrado': True, 'cedula': cedula, 'nombre': nombre, 'celular': celular, 'mostrar_data': True, 'servicios': servicios, 'mensaje': "Cliente encontrado"})
-    
+        if validar_cedula(cedula):
+            # Verificar cliente existente
+            url = f'https://electroaires.herokuapp.com/clientes/{cedula}/'
+            response = requests.get(url, headers=autenticacion(request))
+            data_json = {}
+            try:
+                data_json = response.json()
+            except json.JSONDecodeError:
+                pass
+            if 'detail' in data_json and data_json['detail'] == 'Not found.':
+                return render(request, 'dashboard/dashboard.html', {'crear_cliente': True, 'servicios': servicios, 'mensaje': "Cliente no encontrado"})
+            if response.status_code == 200:
+                cedula = data_json.get('cedula')
+                nombre = data_json.get('nombre')
+                celular = data_json.get('celular')
+                return render(request, 'dashboard/dashboard.html', {'cliente_encontrado': True, 'cedula': cedula, 'nombre': nombre, 'celular': celular, 'mostrar_data': True, 'servicios': servicios, 'mensaje': "Cliente encontrado"})
+        else:
+            return render(request, 'dashboard/dashboard.html', {'mensaje': 'Cedula no valida', 'servicios': servicios})
     return render(request, 'dashboard/dashboard.html', {'servicios': servicios})
 
 
 def generar_servicio(request):
-    mensaje = None
+    servicios = obtener_servicios_activos()
     if request.method == 'POST':
-        tipo = request.POST.get('tipo')
-        placa = request.POST.get('placa')
-        if validar_placa(placa) == True:
-            mensaje = 'Usuario placa válida'
+        placa = request.POST.get('placa').upper()
+        if placa is not None and validar_placa(placa):
+            url = f'https://electroaires.herokuapp.com/serviciosplaca/{placa}/'
+            response_placa = requests.get(url)
+            data = response_placa.json()
+            if data == []:
+                return render(request, 'dashboard/dashboard.html', {'mensaje_placa': 'Vehiculo no encontrado', 'servicios': servicios, 'placa': placa})
+            else:
+                mensaje_placa = 'Vehiculo encontrado'
+            return render(request, 'dashboard/dashboard.html', {'mensaje_placa': mensaje_placa, 'servicios': servicios})
         else:
-            mensaje = 'Usuario placa no válida'
-    return render(request, 'dashboard/dashboard.html', {'mensaje': mensaje})
+            mensaje_placa = 'Placa no válida'
+            return render(request, 'dashboard/dashboard.html', {'mensaje_placa': mensaje_placa, 'servicios': servicios})
+    return render(request, 'dashboard/dashboard.html', {'mensaje_placa': mensaje_placa, 'servicios': servicios})
 
 
 def inventario(request):
@@ -121,7 +137,7 @@ def inventario(request):
 
 
 def ventas(request):
-    return render(request,'dashboard/ventas.html')
+    return render(request, 'dashboard/ventas.html')
 
 
 def buscar(request):
@@ -134,6 +150,8 @@ def buscar(request):
             data = response.json()
             if data:
                 return render(request, 'dashboard/buscar_vehiculo.html', {'data': data, 'mensaje': 'Vehiculo encontrado'})
+            else:
+                return render(request, 'dashboard/buscar_vehiculo.html', {'mensaje': 'Vehiculo NO encontrado'})
         else:
             return render(request, 'dashboard/buscar_vehiculo.html', {'mensaje': 'Placa no valida'})
     return render(request, 'dashboard/buscar_vehiculo.html')
