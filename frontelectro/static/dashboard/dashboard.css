@@ -234,41 +234,10 @@ button.btn__edit {
     margin: 0 5rem;
 }
 
-/* MODAL CREAR VEHICULO*/
-.create__car {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.create__car-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
-.modal-close {
-    float: right;
-    cursor: pointer;
-}
-
-.create__car-close:hover {
-    color: red;
-}
-
-/* FIN MODAL  */
 
 /* MODAL CREAR CLIENTE  */
 #modalCrearUsuario {
-    display: none;
+    display: block;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -302,6 +271,7 @@ button.btn__edit {
 }
 
 /* FIN MODAL CLIENTE   */
+
 #clienteVentana {
     width: 20rem;
     margin: 1rem 3rem;
