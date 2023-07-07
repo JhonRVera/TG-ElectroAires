@@ -16,14 +16,16 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import home, login, dashboard, buscar, inventario, reportes, exit, ventas, generar_servicio, crear_cliente
+from .views import home, login, dashboard, buscar, inventario, reportes, exit, ventas, crear_vehiculos, crear_cliente,generar_servicio,crea_clientes_vehiculos
 
 urlpatterns = [
     path('', home, name='home'),
     path('login/', login, name='login'),
     path('dashboard/', dashboard, name='dashboard'),
     path('crear_cliente/', crear_cliente, name='crear_cliente'),
+    path('crear_vehiculos/', crear_vehiculos, name='crear_vehiculos'),
     path('generar_servicio/', generar_servicio, name='generar_servicio'),
+    path('crea_clientes_vehiculos/', crea_clientes_vehiculos, name='crea_clientes_vehiculos'),
     path('buscar/', buscar, name='buscar'),
     path('ventas/', ventas, name='ventas'),
     path('inventario/', inventario, name='inventario'),
