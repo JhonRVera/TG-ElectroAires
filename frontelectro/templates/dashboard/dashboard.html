@@ -8,33 +8,20 @@
     <form method="POST" action="{% url 'dashboard' %}">
         {% csrf_token %}
         <div class="field__input">
-            <input type="number" name="cedula_clt" placeholder="Cedula" required>
-            <h6>{{ mensaje }}</h6>
-            {% if messages %}
-            {% for message in messages %}
-            <div class="message">{{ message }}</div>
-            {% endfor %}
-            {% endif %}
+            <input type="number" name="cedula_clt" placeholder="Cedula" value="{{cedula}}" required>
         </div>
-        <button class='enter__button' type="submit">BUSCAR CLIENTE</button>
-    </form>
-</div>
-
-<div class="data__form  placa__val">
-    <h1>Validar placa</h1>
-    <form method="POST" action="{% url 'generar_servicio' %}">
-        {% csrf_token %}
         <div class="field__input">
-            <input type="text" name="placa" placeholder="Ingrese placa del vehiculo" required>
+            <input type="text" name="placa" placeholder="Placa vehiculo" value="{{placa}}" required>
         </div>
-        <div>
-            {{ mensaje_placa }}
-        </div>
-        <button class='enter__button' type="submit">BUSCAR PLACA</button>
+        <button class='enter__button' type="submit">VALIDAR SERVICIO</button>
     </form>
+    <h6>{{ mensaje }}</h6>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="message">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
 </div>
-
-
 
 {% if mensaje == "Cliente no encontrado" %}
 <div id="modalCrearUsuario">
@@ -43,7 +30,7 @@
             <h1>Crear usuario</h1>
             {% csrf_token %}
             <div class="field__input modal__input">
-                <input type="number" name="cedula" placeholder="Cedula" required>
+                <input type="number" name="cedula" placeholder="Cedula" value="{{ cedula }}" required>
             </div>
             <div class="field__input modal__input">
                 <input type="text" name="nombre" placeholder="Nombre y apellidos" required>
@@ -58,23 +45,17 @@
 </div>
 {% endif %}
 
-{% if mensaje_placa == 'Vehiculo no encontrado' %}
+{% if mensaje == 'Vehiculo no encontrado' %}
 <div id="modalCrearUsuario">
-    <form method="POST">
+    <form method="POST" action="{% url 'crear_vehiculos' %}">
         <div id="modalCrearUsuario-content">
             <h1>Crear Vehiculo</h1>
             {% csrf_token %}
             <div class="field__input modal__input">
-                <input type="number" name="descripcion" placeholder="Descripcion Arregle" required>
+                <input type="text" name="placa" placeholder="Placa" value="{{ placa }}" required>
             </div>
             <div class="field__input modal__input">
-                <input type="text" name="s_obra" placeholder="Costo mano de obra" required>
-            </div>
-            <div class="field__input modal__input">
-                <input type="number" name="cliente" placeholder="Cliente" required>
-            </div>
-            <div class="field__input modal__input">
-                <input type="text" name="placa" placeholder="Placa" value="{{placa}}" required>
+                <input type="text" name="tipo" placeholder="Tipo Vehiculo" required>
             </div>
             <button class="enter__button btn_cliente" onclick="cerrarCrearCliente('modalCrearUsuario')">CERRAR</button>
             <button type="submit" class="enter__button btn_cliente">CREAR VEHICULO</button>
@@ -83,14 +64,65 @@
 </div>
 {% endif %}
 
-{% if mostrar_data %}
-<div class="data__user">
-    <h3>Datos cliente registrado</h3>
-    <label class="lbl_user"><strong>Numero de cedula :</strong> {{ cedula }}</label>
-    <label class="lbl_user"><strong>Nombre:</strong> {{ nombre }}</label>
-    <label class="lbl_user"><strong>Celular: </strong> {{ celular }}</label>
+{% if mensaje == 'Crear cliente' %}
+<div id="modalCrearUsuario">
+    <form method="POST" action="{% url 'crea_clientes_vehiculos' %}">
+        <div id="modalCrearUsuario-content">
+            <h1>Crear cliente  y vehiculo</h1>
+            {% csrf_token %}
+            <div class="field__input modal__input">
+                <input type="number" name="cedula" placeholder="Cedula" value="{{ cedula }}" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="text" name="placa" placeholder="Placa" value="{{ placa }}" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="text" name="nombre" placeholder="Nombre y apellidos" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="number" name="celular" placeholder="Celular" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="text" name="tipo" placeholder="Tipo Vehiculo" required>
+            </div>
+            <button class="enter__button btn_cliente" onclick="cerrarCrearCliente('modalCrearUsuario')">CERRAR</button>
+            <button type="submit" class="enter__button btn_cliente">CREAR SERVICIO</button>
+        </div>
+    </form>
 </div>
 {% endif %}
+
+{% if mensaje == 'Generar Servicio' %}
+<div id="modalCrearUsuario">
+    <form method="POST" action="{% url 'generar_servicio' %}">
+        <div id="modalCrearUsuario-content">
+            <h1>Generar Servicio</h1>
+            {% csrf_token %}
+            <div class="field__input modal__input">
+                <input type="number" name="cedula" placeholder="Cedula"  value="{{cedula}}" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="text" name="placa" placeholder="Placa" value="{{placa}}" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="text" name="descripcion" placeholder="Descripcion Arreglo" required>
+            </div>
+            <div class="field__input modal__input">
+                <input type="number" name="s_obra" placeholder="Costo mano de obra" value="0">
+            </div>
+            <h6>{{ mensaje }}</h6>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="message">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            <button class="enter__button btn_cliente" onclick="cerrarCrearCliente('modalCrearUsuario')">CERRAR</button>
+            <button type="submit" class="enter__button btn_cliente">GENERAR SERVICIO</button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
 
 <div class="active__service">
     <h1>Servicios en cola</h1>
