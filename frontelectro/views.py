@@ -46,7 +46,6 @@ def crear_cliente(request):
             url = 'https://electroaires.herokuapp.com/clientes/'
             response = requests.post(
                 url, data=data_nuevo, headers=autenticacion(request))
-
             if response.status_code == 201:
                 messages.success(request, 'Cliente creado correctamente')
             else:
@@ -61,44 +60,129 @@ def dashboard(request):
     servicios = obtener_servicios_activos()
     if request.method == 'POST':
         cedula = request.POST.get('cedula_clt')
-        if validar_cedula(cedula):
-            # Verificar cliente existente
-            url = f'https://electroaires.herokuapp.com/clientes/{cedula}/'
-            response = requests.get(url, headers=autenticacion(request))
-            data_json = {}
-            try:
-                data_json = response.json()
-            except json.JSONDecodeError:
-                pass
-            if 'detail' in data_json and data_json['detail'] == 'Not found.':
-                return render(request, 'dashboard/dashboard.html', {'crear_cliente': True, 'servicios': servicios, 'mensaje': "Cliente no encontrado"})
-            if response.status_code == 200:
-                cedula = data_json.get('cedula')
-                nombre = data_json.get('nombre')
-                celular = data_json.get('celular')
-                return render(request, 'dashboard/dashboard.html', {'cliente_encontrado': True, 'cedula': cedula, 'nombre': nombre, 'celular': celular, 'mostrar_data': True, 'servicios': servicios, 'mensaje': "Cliente encontrado"})
+        placa = request.POST.get('placa').upper()
+        if validar_cedula(cedula) == True and validar_placa(placa) == True:
+            cedula = request.POST.get('cedula_clt')
+            placa = request.POST.get('placa').upper()
+            data = {
+                'cedula': cedula,
+                'placa': placa,
+            }
+            url = 'https://electroaires.herokuapp.com/verificacion-vehiculo-cliente/'
+            response = requests.post(
+                url, data=data, headers=autenticacion(request))
+            data_clt = response.json()
+            print(f'Respuesta Api {data_clt}')
+
+            if data_clt['cedula'] == 'Cedula no existe' and data_clt['placa'] == 'Placa no existe':
+                return render(request, 'dashboard/dashboard.html', {'servicios': servicios, 'mensaje': 'Crear cliente', 'cedula': cedula, 'placa': placa})
+
+            elif data_clt['cedula'] == 'Cedula no existe':
+                return render(request, 'dashboard/dashboard.html', {'servicios': servicios, 'mensaje': 'Cliente no encontrado', 'cedula': cedula})
+
+            if data_clt['placa'] == 'Placa no existe':
+                return render(request, 'dashboard/dashboard.html', {'servicios': servicios, 'mensaje': 'Vehiculo no encontrado', 'placa': placa})
+            else:
+                return render(request, 'dashboard/dashboard.html', {'servicios': servicios, 'mensaje': 'Generar Servicio', 'cedula': cedula, 'placa': placa})
         else:
-            return render(request, 'dashboard/dashboard.html', {'mensaje': 'Cedula no valida', 'servicios': servicios})
+            return render(request, 'dashboard/dashboard.html', {'servicios': servicios, 'mensaje': 'Ingrese datos validos'})
     return render(request, 'dashboard/dashboard.html', {'servicios': servicios})
 
 
 def generar_servicio(request):
-    servicios = obtener_servicios_activos()
+    if request.method == 'POST':
+        cedula = request.POST.get('cedula')
+        placa = request.POST.get('placa').upper()
+        if validar_cedula(cedula) == True and validar_placa(placa) == True:
+            cedula = request.POST.get('cedula')
+            placa = request.POST.get('placa').upper()
+            descripcion = request.POST.get('descripcion')
+            m_obra = request.POST.get('s_obra')
+            if m_obra == '':
+                m_obra = 0
+            else:
+                m_obra = m_obra
+            data = {
+                "s_descripcion": descripcion,
+                "s_mano_obra": m_obra,
+                "estado": True,
+                "cliente": cedula,
+                "s_vehiculo": placa
+            }
+            print(data)
+            url = 'https://electroaires.herokuapp.com/servicios/'
+            response = requests.post(url, data=data)
+            print(response.json())
+            if response.status_code == 201:
+                messages.success(request, 'Servicio creado correctamente')
+            else:
+                messages.error(
+                    request, f'Error al crear el vehiculo. Código de respuesta: {response.status_code}')
+        else:
+            messages.error(request, 'Ingrese datos validos')
+    return redirect('dashboard')
+
+
+def crear_vehiculos(request):
     if request.method == 'POST':
         placa = request.POST.get('placa').upper()
-        if placa is not None and validar_placa(placa):
-            url = f'https://electroaires.herokuapp.com/serviciosplaca/{placa}/'
-            response_placa = requests.get(url)
-            data = response_placa.json()
-            if data == []:
-                return render(request, 'dashboard/dashboard.html', {'mensaje_placa': 'Vehiculo no encontrado', 'servicios': servicios, 'placa': placa})
+        if validar_placa(placa):
+            placa = request.POST.get('placa').upper()
+            tipo = request.POST.get('tipo')
+            data_nuevo = {
+                'placa': placa,
+                'tipo': tipo,
+            }
+            url = 'https://electroaires.herokuapp.com/vehiculos/'
+            response = requests.post(
+                url, data=data_nuevo, headers=autenticacion(request))
+            if response.status_code == 201:
+                messages.success(request, 'Vehiculo creado correctamente')
             else:
-                mensaje_placa = 'Vehiculo encontrado'
-            return render(request, 'dashboard/dashboard.html', {'mensaje_placa': mensaje_placa, 'servicios': servicios})
+                messages.error(
+                    request, f'Error al crear el vehiculo. Código de respuesta: {response.status_code}')
         else:
-            mensaje_placa = 'Placa no válida'
-            return render(request, 'dashboard/dashboard.html', {'mensaje_placa': mensaje_placa, 'servicios': servicios})
-    return render(request, 'dashboard/dashboard.html', {'mensaje_placa': mensaje_placa, 'servicios': servicios})
+            messages.error(request, 'Ingrese datos validos')
+    return redirect('dashboard')
+
+
+def crea_clientes_vehiculos(request):
+    servicios = obtener_servicios_activos()
+    if request.method == 'POST':
+        cedula = request.POST.get('cedula')
+        placa = request.POST.get('placa').upper()
+        if validar_cedula(cedula) and validar_placa(placa):
+            cedula = request.POST.get('cedula')
+            nombre = request.POST.get('nombre')
+            celular = request.POST.get('celular')
+            placa = request.POST.get('placa').upper()
+            tipo = request.POST.get('tipo')
+
+            data_cliente = {
+                'cedula': cedula,
+                'nombre': nombre,
+                'celular': celular
+            }
+
+            data_vehiculo = {
+                'placa': placa,
+                'tipo': tipo,
+            }
+            url_vehiculos = 'https://electroaires.herokuapp.com/vehiculos/'
+            url_clientes = 'https://electroaires.herokuapp.com/clientes/'
+
+            response_clientes = requests.post(url_clientes, data=data_cliente, headers=autenticacion(request))
+            response_vehiculos = requests.post(url_vehiculos, data=data_vehiculo, headers=autenticacion(request))
+
+            if response_clientes.status_code == 201 and response_vehiculos.status_code == 201:
+                messages.success(request, 'Vehiculo y cliente creado correctamente')
+                return render(request, 'dashboard/dashboard.html', {'servicios': servicios, 'mensaje': 'Generar Servicio', 'cedula': cedula, 'placa': placa})
+            else:
+                messages.error(request, f'Error al crear el vehiculo. Código de respuesta: {response_clientes.status_code}')
+                messages.error(request, f'Error al crear el vehiculo. Código de respuesta: {response_vehiculos.status_code}')
+        else:
+            messages.error(request, 'Ingrese datos validos')
+    return redirect('dashboard')
 
 
 def inventario(request):
