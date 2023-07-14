@@ -111,8 +111,6 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-USUARIO = 'admin'
-CONTRASEÑA = 'admin'
 
-# USUARIO = os.environ.get('username_api')
-# CONTRASEÑA = os.environ.get('password_api')
+USUARIO = os.environ.get('username_api')
+CONTRASEÑA = os.environ.get('password_api')
