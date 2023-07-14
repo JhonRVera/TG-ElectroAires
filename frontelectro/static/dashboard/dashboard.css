@@ -261,16 +261,15 @@ button.btn__edit {
     padding: 2rem;
 }
 
-#modalCrearUsuario-close {
-    float: right;
-    cursor: pointer;
-}
-
 .modal__input input {
     width: 100%;
 }
 
 /* FIN MODAL CLIENTE   */
+
+/* MODAL EDITAR PRODUCTO  */
+
+/* FIN MODAL EDITAR */
 
 #clienteVentana {
     width: 20rem;
@@ -284,4 +283,58 @@ button.btn__edit {
 .lbl_user {
     margin: 1rem;
     display: flex;
+}
+
+.input__ventas {
+    margin: 5rem 9rem 0;
+}
+.ventas__form {
+    display: flex;
+}
+
+.input__ventas input {
+    border: 0;
+    border-bottom: solid thin #747a7e;
+    border-radius: 0%;
+    outline: none;
+    width: 20%;
+    background: none;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.btn__ventas {
+    background-color: #2229b5;
+    width: 5%;
+    color: white;
+    border: 0;
+    box-shadow: none;
+    height: 40px;
+    margin: 0 0 0 6rem;
+    padding: -1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: ease-in-out .2s;
+}
+
+.btn__ventas img,
+.btn__cant img {
+    width: 24px ;
+}
+
+.acomodar {
+    margin: 1rem 0 2rem 26rem;
+}
+.btn__cant {
+    background-color: #2229b5;
+    width: 5%;
+    color: white;
+    border: 0;
+    box-shadow: none;
+    height: 40px;
+    margin: 0 0 0 1.5rem;
+    padding: -1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: ease-in-out .2s;
 }

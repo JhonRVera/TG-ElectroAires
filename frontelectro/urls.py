@@ -16,8 +16,8 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import home, login, dashboard, buscar, inventario, reportes, exit, ventas, crear_vehiculos, crear_cliente,generar_servicio,crea_clientes_vehiculos
-
+from .views import home, login, dashboard, buscar, inventario, reportes, exit, crear_vehiculos, crear_cliente,generar_servicio,crea_clientes_vehiculos
+from .ventas_views import ventas,repuestos
 urlpatterns = [
     path('', home, name='home'),
     path('login/', login, name='login'),
@@ -28,6 +28,7 @@ urlpatterns = [
     path('crea_clientes_vehiculos/', crea_clientes_vehiculos, name='crea_clientes_vehiculos'),
     path('buscar/', buscar, name='buscar'),
     path('ventas/', ventas, name='ventas'),
+    path('repuestos/', repuestos, name='repuestos'),
     path('inventario/', inventario, name='inventario'),
     path('reportes/', reportes, name='reportes'),
     path('logout/', exit, name='exit'),
