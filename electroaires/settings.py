@@ -70,22 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'electroaires.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'electroaires',
-        'USER': 'postgres',
-        'PASSWORD':'prueba1234',
-        'HOST':'35.247.247.120',
-        'PORT': '5432',
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

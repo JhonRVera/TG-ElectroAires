@@ -34,7 +34,7 @@ def validar_cedula(cedula):
 
 
 def obtener_servicios_activos():
-    url = 'https://electroaires.herokuapp.com/servicios/'
+    url = 'https://api-electroaires-30a0049f64a4.herokuapp.com/servicios/'
     response = requests.get(url)
     data = response.json()
     if response.status_code == 200:

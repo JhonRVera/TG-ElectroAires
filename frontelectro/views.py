@@ -1,5 +1,4 @@
 import requests
-import json
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
@@ -14,13 +13,13 @@ def home(request):
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST.get('correo')
+        username = request.POST.get('cedula')
         password = request.POST.get('contrasena')
         data = {
-            'correo': username,
+            'cedula': username,
             'contrasena': password
         }
-        url = 'https://electroaires.herokuapp.com/usuarios/verificacion/'
+        url = 'https://api-electroaires-30a0049f64a4.herokuapp.com/usuarios/verificacion/'
         response = requests.post(url, data=data)
 
         if response.status_code == 200:
@@ -43,7 +42,7 @@ def crear_cliente(request):
                 'nombre': nombre,
                 'celular': celular
             }
-            url = 'https://electroaires.herokuapp.com/clientes/'
+            url = 'https://api-electroaires-30a0049f64a4.herokuapp.com/clientes/'
             response = requests.post(
                 url, data=data_nuevo, headers=autenticacion(request))
             if response.status_code == 201:
@@ -68,7 +67,7 @@ def dashboard(request):
                 'cedula': cedula,
                 'placa': placa,
             }
-            url = 'https://electroaires.herokuapp.com/verificacion-vehiculo-cliente/'
+            url = 'https://api-electroaires-30a0049f64a4.herokuapp.com/verificacion-vehiculo-cliente/'
             response = requests.post(
                 url, data=data, headers=autenticacion(request))
             data_clt = response.json()
@@ -110,14 +109,12 @@ def generar_servicio(request):
                 "s_vehiculo": placa
             }
             print(data)
-            url = 'https://electroaires.herokuapp.com/servicios/'
+            url = 'https://api-electroaires-30a0049f64a4.herokuapp.com/servicios/'
             response = requests.post(url, data=data)
-            print(response.json())
             if response.status_code == 201:
                 messages.success(request, 'Servicio creado correctamente')
             else:
-                messages.error(
-                    request, f'Error al crear el vehiculo. Código de respuesta: {response.status_code}')
+                messages.error(request, f'Error al crear el vehiculo. Código de respuesta: {response.status_code}')
         else:
             messages.error(request, 'Ingrese datos validos')
     return redirect('dashboard')
@@ -133,7 +130,7 @@ def crear_vehiculos(request):
                 'placa': placa,
                 'tipo': tipo,
             }
-            url = 'https://electroaires.herokuapp.com/vehiculos/'
+            url = 'https://api-electroaires-30a0049f64a4.herokuapp.com/vehiculos/'
             response = requests.post(
                 url, data=data_nuevo, headers=autenticacion(request))
             if response.status_code == 201:
@@ -168,8 +165,8 @@ def crea_clientes_vehiculos(request):
                 'placa': placa,
                 'tipo': tipo,
             }
-            url_vehiculos = 'https://electroaires.herokuapp.com/vehiculos/'
-            url_clientes = 'https://electroaires.herokuapp.com/clientes/'
+            url_vehiculos = 'https://api-electroaires-30a0049f64a4.herokuapp.com/vehiculos/'
+            url_clientes = 'https://api-electroaires-30a0049f64a4.herokuapp.com/clientes/'
 
             response_clientes = requests.post(url_clientes, data=data_cliente, headers=autenticacion(request))
             response_vehiculos = requests.post(url_vehiculos, data=data_vehiculo, headers=autenticacion(request))
@@ -186,7 +183,7 @@ def crea_clientes_vehiculos(request):
 
 
 def inventario(request):
-    url = 'https://electroaires.herokuapp.com/repuestos/'
+    url = 'https://api-electroaires-30a0049f64a4.herokuapp.com/repuestos/'
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -219,17 +216,12 @@ def inventario(request):
 
     return render(request, 'dashboard/inventario.html', {'dataInventario': dataInventario})
 
-
-def ventas(request):
-    return render(request, 'dashboard/ventas.html')
-
-
 def buscar(request):
     if request.method == 'POST':
         placa = request.POST.get('placa').upper()
         if placa is not None and validar_placa(placa):
             print(f'{placa} -> placa válida')
-            url = f'https://electroaires.herokuapp.com/serviciosplaca/{placa}/'
+            url = f'https://api-electroaires-30a0049f64a4.herokuapp.com/serviciosplaca/{placa}/'
             response = requests.get(url)
             data = response.json()
             if data:

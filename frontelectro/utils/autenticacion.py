@@ -7,7 +7,7 @@ def autenticacion(request):
     username = settings.USUARIO
     password = settings.CONTRASEÑA
 
-    response = requests.post('https://electroaires.herokuapp.com/api/token/',
+    response = requests.post('https://api-electroaires-30a0049f64a4.herokuapp.com/api/token/',
                              data={'username': username, 'password': password})
 
     if response.status_code == 200:
