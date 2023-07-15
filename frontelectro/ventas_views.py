@@ -41,6 +41,7 @@ def repuestos(request):
         response = requests.get(url, headers=autenticacion(request))
         if response.status_code == 200:
             repuestos = response.json()
+            print(repuestos)
             return render(request, 'dashboard/ventas.html', {'repuestos': repuestos})
         else:
             print(f"Error en la API código {response.status_code}")
