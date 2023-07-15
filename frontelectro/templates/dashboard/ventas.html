@@ -2,25 +2,23 @@
 {% load static %}
 
 {% block content %}
-<h1>Ventas</h1>
 <div class="ventas__form">
     <div class="form">
         <form method="post" action="{% url 'ventas' %}">
             {% csrf_token %}
             <div class="input__ventas">
-                <label for="cliente">Cliente: </label>
-                <input type="text" name="cliente" placeholder="Numero de cedula" value="{{ cedula }}">
+                <h1>Ventas</h1>
                 <span>
                     <div>
-                        <label for="nombre">Nombre: </label>
+                        <label for="cliente">Cliente: </label>
+                        <input type="text" name="cliente" placeholder="Numero de cedula" value="{{ cedula }}">
+                        <label for="nombre" style=" margin: 0 0 0 23px;">Nombre: </label>
                         <input type="text" name="nombre" value="{{ nombre }}">
-                    </div>
-                    <div>
                         <label for="celular">Celular: </label>
                         <input type="text" name="celular" value="{{ celular }}">
+                        <button class='btn__ventas' type="submit"> <img src="{% static 'images/lupa.png' %}"></button>
                     </div> 
 
-                    <button class='btn__ventas' type="submit"> <img src="{% static 'images/lupa.png' %}"></button>
                 </span>
                 <h6>{{ mensaje }}</h6>
                 {% if messages %}
@@ -41,7 +39,7 @@
             <input type="number" name="codigo" placeholder="Codigo">
             <label for="cantidad">Cantidad: </label>
             <input type="number" name="cantidad" placeholder="Cantidad">
-            <button class="btn__cant" type="submit"> <img src="{% static 'images/lupa.png' %}"></button>
+            <button class="btn__cant" type="submit">AGREGAR</button>
         </span>
         </form>
         <h6>{{ mensaje_repuesto }}</h6>
@@ -66,44 +64,20 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in dataInventario %}
+            {% for item in repuestos %}
             <tr>
                 <td>{{ item.id }}</td>
-                <hr>
                 <td>{{ item.r_nombre_repuesto }}</td>
                 <td>{{ item.r_cantidad }}</td>
                 <td>{{ item.r_valor_publico }}</td>
                 <td>{{ item.r_valor_proveedor }}</td>
-                <td>
-                    <button type="button" class="btn__edit"
-                        onclick="abrirModalEditar('{{ item.id }}')">EDITAR</button>
-                </td>
+                <!-- <td>
+                    <button type="button" class="btn__edit">EDITAR</button>
+                </td> -->
             </tr>
-            <!-- Modal de Edición -->
-            <div id="modalEditar" class="modal">
-                <div class="modal-content">
-                    <h2>Editar Producto</h2>
-                    <form id="editarForm" method="POST">
-                        {% csrf_token %}
-                        <div class="field__input">
-                            <input type="text" name="nombre_r" value="{{ item.r_nombre_repuesto  }}" required>
-                        </div>
-                        <div class="field__input">
-                            <input type="number" name="cantidad" value="{{ item.r_cantidad }}" required>
-                        </div>
-                        <div class="field__input">
-                            <input type="number" name="v_proveedor" value="{{ item.r_valor_proveedor }}" required>
-                        </div>
-                        <div class="field__input">
-                            <input type="number" name="v_venta" value="{{ item.r_valor_publico }}" required>
-                        </div>
-                        <button class="enter__button btn_cliente" onclick="cerrarModalEditar()">CERRAR</button>
-                        <button type="submit" class="enter__button btn_cliente">CREAR VEHICULO</button>
-                    </form>
-                </div>
-            </div>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-{% endfor %}
-</tbody>
-</table>
+
 {% endblock %}

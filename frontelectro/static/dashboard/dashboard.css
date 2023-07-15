@@ -297,7 +297,7 @@ button.btn__edit {
     border-bottom: solid thin #747a7e;
     border-radius: 0%;
     outline: none;
-    width: 20%;
+    width: 15%;
     background: none;
     padding: 10px;
     font-size: 15px;
@@ -310,7 +310,7 @@ button.btn__edit {
     border: 0;
     box-shadow: none;
     height: 40px;
-    margin: 0 0 0 6rem;
+    margin: 0 0 0 1rem;
     padding: -1rem;
     border-radius: 5px;
     cursor: pointer;
@@ -323,11 +323,11 @@ button.btn__edit {
 }
 
 .acomodar {
-    margin: 1rem 0 2rem 26rem;
+    margin: 1rem 0 2rem 9rem;
 }
 .btn__cant {
     background-color: #2229b5;
-    width: 5%;
+    width: 10%;
     color: white;
     border: 0;
     box-shadow: none;
